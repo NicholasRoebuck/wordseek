@@ -32,6 +32,18 @@ android {
 }
 
 dependencies {
+    val room_version= "2.6.1"
+    //room database
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+
+    implementation("androidx.appcompat:appcompat:1.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.5.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
+
+    //volley
+    implementation("com.android.volley:volley:1.2.1")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -40,4 +52,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(kotlin("script-runtime"))
 }

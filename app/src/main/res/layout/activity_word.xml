@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".ui.WordActivity">
+
+    <TextView
+        android:id="@+id/wordActivityUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:padding="15dp"
+        android:text="Username"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <TextView
+        android:id="@+id/pronunciation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HERE"
+        android:textColor="#99F3052E"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/someText"
+        app:layout_constraintStart_toEndOf="@+id/someText"
+        app:layout_constraintTop_toTopOf="@+id/someText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/moreText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  for audio pronunciation"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pronunciation"
+        app:layout_constraintStart_toEndOf="@+id/pronunciation"
+        app:layout_constraintTop_toTopOf="@+id/pronunciation" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(you will hear a *ding* if no audio is available)"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/moreText"
+        app:layout_constraintStart_toStartOf="@+id/someText"
+        app:layout_constraintTop_toBottomOf="@+id/moreText" />
+
+    <TextView
+        android:id="@+id/wordActivityWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:gravity="center|right"
+        android:text="word"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordActivityUsername" />
+
+    <TextView
+        android:id="@+id/definition"
+        android:layout_width="300dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="32dp"
+        android:gravity="start|top"
+        android:text="definition"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/wordActivityWord"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/wordActivityWord"
+        app:layout_constraintTop_toBottomOf="@+id/wordActivityWord" />
+
+    <TextView
+        android:id="@+id/wordActivityWordDefinition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:text="Phonetics: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/someText" />
+
+    <TextView
+        android:id="@+id/phonetics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="placeholder"
+        android:layout_marginStart="20dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/wordActivityWordDefinition"
+        app:layout_constraintStart_toEndOf="@+id/wordActivityWordDefinition"
+        app:layout_constraintTop_toTopOf="@+id/wordActivityWordDefinition" />
+
+
+    <TextView
+        android:id="@+id/partSpeech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Part of speech: "
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordActivityWordDefinition" />
+
+    <TextView
+        android:id="@+id/partOfSpeech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="placeholder"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/partSpeech"
+        app:layout_constraintStart_toEndOf="@+id/partSpeech"
+        app:layout_constraintTop_toTopOf="@+id/partSpeech" />
+
+    <TextView
+        android:id="@+id/someText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="176dp"
+        android:text="Tap "
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wordActivityWord" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createWordQuotableBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@color/black"
+        android:textColor="@color/black"
+        app:backgroundTint="#5D95F0"
+        android:text="Create Quotable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fetchNewWordBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/fetchNewWordBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        app:backgroundTint="#5D95F0"
+        android:textColor="@color/black"
+        android:background="@color/black"
+        android:text="Pick New Word"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/createWordQuotableBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

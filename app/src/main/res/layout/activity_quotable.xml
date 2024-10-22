@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quotable"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".ui.QuotableActivity">
+
+    <TextView
+        android:id="@+id/quotableUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="Username"
+        android:padding="15dp"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/quotableWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:padding="15dp"
+        android:text="word"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/quotableDefinition"
+        android:layout_width="320dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="5dp"
+        android:padding="15dp"
+        android:text="definition"
+        android:textSize="18sp" />
+
+
+    <EditText
+        android:padding="15dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/quoteEdtTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter quotables and tap &quot;Add Quotable&quot;" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="15dp"
+        android:id="@+id/quotableRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/quoteSubmitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="Add Quotable"
+        android:backgroundTint="#5D95F0"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/quoteUpdateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#5D95F0"
+        android:text="Update Quotable"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+</LinearLayout>
