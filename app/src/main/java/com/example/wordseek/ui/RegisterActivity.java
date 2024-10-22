@@ -22,9 +22,19 @@ import com.example.wordseek.R;
 import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText rePassword, password, userName, accountName;
@@ -84,11 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Re-entered password must be more than 8 characters", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                int pass1 = hashPass(passwordString);
+                int pass2 = hashPass(rePasswordString);
 
-                if (checkPasswords(passwordString, rePasswordString)){
+                if (checkPasswords(pass1, pass2)){
                         if (!checkUsernames(userNameString)){
                             executorService.submit(() ->{
-                                repository.insert(new User(accountNameString, userNameString, passwordString));
+                                repository.insert(new User(accountNameString, userNameString, String.valueOf(pass1)));
                             });
                             closeKeyboard();
                             startActivity(new Intent(RegisterActivity.this, MainActivity.class));
@@ -138,8 +150,16 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkPasswords(String pass1, String pass2){
-        return pass1.equals(pass2);
+    public static int hashPass(String pass){
+        int hash = 0;
+        for (int i = 0; i < pass.length(); i++){
+            hash += pass.charAt(i);
+        }
+        return hash * (pass.charAt(pass.length() -1) -  (pass.length() * pass.length()));
+    }
+
+    public boolean checkPasswords(int pass1, int pass2){
+        return pass1 == pass2;
     }
 
     public boolean checkUsernames(String userName) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,7 @@ public class QuotableAdapter extends RecyclerView.Adapter<QuotableAdapter.Quotab
 
     public void delete(int position){
         quotables.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
 
@@ -69,9 +70,22 @@ public class QuotableAdapter extends RecyclerView.Adapter<QuotableAdapter.Quotab
 
     public static class QuotableViewHolder extends RecyclerView.ViewHolder{
         private final TextView quotable;
+        private final ImageView deleteQuote;
 
         public QuotableViewHolder(@NonNull View itemView, QuotableAdapterInterface quotableAdapterInterface) {
             super(itemView);
+            deleteQuote = itemView.findViewById(R.id.deleteQuote);
+            deleteQuote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (quotableAdapterInterface != null) {
+                        int position = getAbsoluteAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            quotableAdapterInterface.quotableAdapterInterfaceDeleteQuoteOnClick(position);
+                        }
+                    }
+                }
+            });
             quotable = itemView.findViewById(R.id.quotableItem);
             quotable.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -43,7 +44,7 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
     private QuotableAdapter quotableAdapter;
     EditText quotesEdtTxt;
     TextView quotableWord, quotableUsername, quotableDefinition;
-    Button quoteSubmitBtn, quoteUpdateBtn;
+    Button quoteSubmitBtn;
     List<Quotable> quotablesList;
     Repository repository;
     ExecutorService executorService;
@@ -64,14 +65,13 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
-        String usernameString;
-        usernameString = sharedPreferences.getString("username", "");
-        executorService = Executors.newSingleThreadExecutor();
+        String usernameString = sharedPreferences.getString("username", "");
+        executorService = Executors.newFixedThreadPool(3);
         repository = new Repository(getApplication());
         Intent intent = getIntent();
         word = intent.getParcelableExtra("word");
         String definition = intent.getStringExtra("definition");
-        quotablesList = new ArrayList<>();
+        quotablesList = repository.getAssociatedQuotables(word.getWord());
 
 
         quotableWord = findViewById(R.id.quotableWord);
@@ -82,7 +82,6 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
         quotableDefinition.setText(definition);
         quotesEdtTxt = findViewById(R.id.quoteEdtTxt);
         quoteSubmitBtn = findViewById(R.id.quoteSubmitBtn);
-        quoteUpdateBtn  = findViewById(R.id.quoteUpdateBtn);
         quotableRecyclerView = findViewById(R.id.quotableRecyclerView);
 
         quotableAdapter = new QuotableAdapter(this, quotablesList, this);
@@ -104,7 +103,11 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
 
     @Override
     public void quotableAdapterInterfaceOnClick(int position) {
-        manageQuotable(position);
+    }
+
+    @Override
+    public void quotableAdapterInterfaceDeleteQuoteOnClick(int position) {
+
     }
 
 
@@ -122,62 +125,12 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
                         repository.insert(quotable);
                     });
                     quotesEdtTxt.setText("");
+                    quotableAdapter.notifyDataSetChanged();
                 }
             }
         });
     }
 
-    public void manageQuotable(int position){
-        String quoteTxt = quotablesList.get(position).getQuotable();
-        quotesEdtTxt.setText(quoteTxt);
-        String updateQuotableTxt = quotesEdtTxt.getText().toString().trim();
-        quoteUpdateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (updateQuotableTxt.isEmpty()){
-                    return;
-                }
-                Quotable quotable = quotablesList.get(position);
-                if (quotable.getQuotable().equals(updateQuotableTxt)){
-                    quotesEdtTxt.setText("");
-                    return;
-                }
-                quotable.setQuotable(updateQuotableTxt);
-                executorService.execute(()->{
-                    repository.update(quotable);
-                });
-                quotableAdapter.notifyItemChanged(position);
-                quotesEdtTxt.setText("");
-            }
-        });
-    }
-
-    public void manage(int position, Context context){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-        builder.setTitle("Delete or manage?")
-                .setMessage("Tap outside of the alert to exit")
-                .setCancelable(true)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setNegativeButton("Edit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        quotablesList.remove(position);
-                        dialogInterface.dismiss();
-                    }
-                }).create().show();
-    }
 
     public void closeKeyboard(){
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);

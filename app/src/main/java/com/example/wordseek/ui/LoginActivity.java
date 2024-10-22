@@ -68,7 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Password is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                User user = repository.userLogin(userNameString, passwordString);
+
+                int pass = hashPass(passwordString);
+                User user = repository.userLogin(userNameString, String.valueOf(pass));
 
                 if (user==null ){
                     Toast.makeText(LoginActivity.this, "Invalid username and password", Toast.LENGTH_SHORT).show();
@@ -100,8 +102,6 @@ public class LoginActivity extends AppCompatActivity {
         };
     }
 
-
-
     public void closeKeyboard(){
         InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         if (inputMethodManager.isAcceptingText()) {
@@ -118,6 +118,14 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public static int hashPass(String pass){
+        int hash = 0;
+        for (int i = 0; i < pass.length(); i++){
+            hash += pass.charAt(i);
+        }
+        return hash * (pass.charAt(pass.length() -1) -  (pass.length() * pass.length()));
     }
 
     @Override

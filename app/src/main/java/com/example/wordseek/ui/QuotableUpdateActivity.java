@@ -1,6 +1,7 @@
 package com.example.wordseek.ui;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -46,7 +48,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
     private QuotableAdapter quotableAdapter;
     EditText quotesEdtTxt;
     TextView quotableWord, quotableUsername, quotableDefinition;
-    Button quoteAddBtn, quoteUpdateBtn;
+    Button quoteAddBtn;
     List<Quotable> quotablesList;
     Repository repository;
     ExecutorService executorService;
@@ -67,10 +69,9 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
 
         SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
         String usernameString;
-        int userId;
-        userId = sharedPreferences.getInt("userId", 0);
+        int userId = sharedPreferences.getInt("userId", 0);
         usernameString = sharedPreferences.getString("username", "");
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = Executors.newFixedThreadPool(3);
         repository = new Repository(getApplication());
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
@@ -80,7 +81,6 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
 
         getDefinition(wordListPosition);
 
-        quoteUpdateBtn = findViewById(R.id.quoteUpdateBtn);
         quotableWord = findViewById(R.id.quotableWord);
         quotableWord.setText(wordListPosition);
         quotableUsername = findViewById(R.id.quotableUsername);
@@ -94,6 +94,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
         quotableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         quotableRecyclerView.setAdapter(quotableAdapter);
 
+        createQuote(wordListPosition);
         hideSoftKeyboard(findViewById(R.id.quotable));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -105,33 +106,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
         };
     }
 
-
-    @Override
-    public void quotableAdapterInterfaceOnClick(int position) {
-        String quoteTxt = quotablesList.get(position).getQuotable();
-        quotesEdtTxt.setText(quoteTxt);
-        String updateQuotableTxt = quotesEdtTxt.getText().toString().trim();
-
-        quoteUpdateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (updateQuotableTxt.isEmpty()){
-                    return;
-                }
-                Quotable quotable = quotablesList.get(position);
-                if (quotable.getQuotable().equals(updateQuotableTxt)){
-                    quotesEdtTxt.setText("");
-                    return;
-                }
-                    quotable.setQuotable(updateQuotableTxt);
-                    executorService.execute(()->{
-                        repository.update(quotable);
-                    });
-                    quotableAdapter.notifyItemChanged(position);
-                    quotesEdtTxt.setText("");
-                }
-        });
-
+    public void createQuote(String word){
         quoteAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,30 +114,55 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
                 if (!quote.trim().isEmpty()) {
                     SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
                     int userId = sharedPreferences.getInt("userId", 0);
-                    Quotable quotable =new Quotable(quotablesList.get(position).getWord(), quote, userId);
-                    quotableAdapter.addQuote(quotable);
+                    Log.i("UpdateQuotableAct", "onClick: " + quotablesList.size());
+                    Quotable quotable =new Quotable(word, quote, userId);
+                    quotesEdtTxt.setText("");
                     executorService.execute(()->{
                         repository.insert(quotable);
                     });
-                    quotesEdtTxt.setText("");
+                    quotableAdapter.addQuote(quotable);
+                    quotableAdapter.notifyDataSetChanged();
                 }
             }
         });
-
     }
-//
-//    if (!quotablesList.contains(new Quotable(updateQuotableTxt))) {
-//        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
-//        int userId = sharedPreferences.getInt("userId", 0);
-//        Quotable newQuote =new Quotable(quotableWord.getText().toString(), updateQuotableTxt, userId);
-//        executorService.execute(()->{
-//            repository.insert(newQuote);
-//            runOnUiThread(()->{
-//                quotableAdapter.addQuote(newQuote);
-//                quotableAdapter.notifyItemInserted(quotablesList.size()-1);
-//            });
-//        });
-//    }
+
+
+    @Override
+    public void quotableAdapterInterfaceOnClick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        final EditText editText = new EditText(this);
+
+        builder.setMessage(quotableWord.getText().toString().toUpperCase() + ":  " + quotableDefinition.getText().toString())
+                .setView(editText)
+                .setCancelable(true)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Quotable quotable = quotablesList.get(position);
+                        quotable.setQuotable(editText.getText().toString());
+                        executorService.execute(()->{
+                            Log.i("UpdateQuote", "onClick: " + quotable.getQuotable());
+                            repository.update(quotable);
+                            Log.i("UpdateQuote", "onClick: " + quotable.getQuotable());
+                        });
+                        quotableAdapter.notifyItemChanged(position);
+                        quotableAdapter.notifyDataSetChanged();
+                    }
+                }).create().show();
+    }
 
     public void getDefinition(String randomWord){
         Log.e("WordActivity", "Error: " + randomWord);
@@ -191,6 +191,36 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
             }
         });
         queue.add(request);
+    }
+
+    @Override
+    public void quotableAdapterInterfaceDeleteQuoteOnClick(int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        builder.setTitle("Delete Quotable?")
+                .setCancelable(true)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Quotable quotable = quotablesList.get(position);
+                        executorService.execute(() -> {
+                            repository.delete(quotable);
+                        });
+                        quotableAdapter.delete(position);
+                        quotableAdapter.notifyDataSetChanged();
+                    }
+                }).create().show();
     }
 
     public void closeKeyboard(){

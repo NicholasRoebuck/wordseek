@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BlurMaskFilter;
 import android.graphics.MaskFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ import com.example.wordseek.adapter.WordAdapter;
 import com.example.wordseek.adapter.WordAdapterInterface;
 import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.Quotable;
+import com.example.wordseek.entities.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,8 +45,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.annotation.processing.Generated;
 
 
 public class ProfileActivity extends AppCompatActivity implements WordAdapterInterface {
@@ -126,6 +132,17 @@ public class ProfileActivity extends AppCompatActivity implements WordAdapterInt
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
 
+        MenuItem menuItem = menu.findItem(R.id.report);
+        menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    startActivity(new Intent(ProfileActivity.this, ReportActivity.class));
+                }
+                return false;
+            }
+        });
+
         MenuItem searchBar = menu.findItem(R.id.searchBar);
         SearchView searchView = (SearchView) searchBar.getActionView();
         searchView.setQueryHint("Search your WordSeek Words");
@@ -146,7 +163,9 @@ public class ProfileActivity extends AppCompatActivity implements WordAdapterInt
 
     private void createAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+        final EditText editText = new EditText(this);
         builder.setTitle("Change password?")
+                .setView(editText)
                 .setCancelable(true)
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
@@ -163,38 +182,20 @@ public class ProfileActivity extends AppCompatActivity implements WordAdapterInt
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        String pass = editText.getText().toString();
+                        SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
+                        String username = sharedPreferences.getString("username", "");
+                        if (pass.length() > 8){
+                            User user = repository.checkUser(username);
+                            user.setPassword(String.valueOf(hashPass(pass)));
+                            executorService.execute(()->{
+                                repository.update(user);
+                            });
+                        }
                     }
                 }).create().show();
     }
 
-    public ArrayList<String> parseData(JSONArray response){
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            JSONObject jsonObject = response.getJSONObject(0);
-
-            JSONArray phoneticsData = jsonObject.getJSONArray("phonetics");
-            JSONObject phoneticsDataObject = phoneticsData.getJSONObject(0);
-            String phoneticText = phoneticsDataObject.getString("text");
-            String audio = phoneticsDataObject.getString("audio");
-
-            JSONArray meaningsArray = jsonObject.getJSONArray("meanings");
-            JSONObject object = meaningsArray.getJSONObject(0);
-            String partOfSpeechData = object.getString("partOfSpeech");
-
-            JSONArray definitionsArray = object.getJSONArray("definitions");
-            JSONObject definitionsObject = definitionsArray.getJSONObject(0);
-            String definitionData = definitionsObject.getString("definition");
-
-            list.add(phoneticText);
-            list.add(audio);
-            list.add(partOfSpeechData);
-            list.add(definitionData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
 
     @Override
     public void wordAdapterInterfaceOnClick(int position) {
@@ -252,6 +253,13 @@ public class ProfileActivity extends AppCompatActivity implements WordAdapterInt
                         wordAdapter.notifyItemRemoved(position);
                     }
                 }).create().show();
+    }
+    public static int hashPass(String pass){
+        int hash = 0;
+        for (int i = 0; i < pass.length(); i++){
+            hash += pass.charAt(i);
+        }
+        return hash * (pass.charAt(pass.length() -1) -  (pass.length() * pass.length()));
     }
 
 

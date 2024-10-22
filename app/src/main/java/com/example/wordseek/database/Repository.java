@@ -69,28 +69,6 @@ public class Repository {
         return mAllQuotables;
     }
 
-//    public void update (Word word) {
-//        dbExecutor.execute(() ->{
-//            mWordDAO.update(word);
-//        });
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-//    public void delete(Word word) {
-//        dbExecutor.execute(() ->{
-//            mWordDAO.delete(word);
-//        });
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     public void insert(User user){
         dbExecutor.execute(() ->{
             mUserDAO.insert(user);
@@ -224,14 +202,4 @@ public class Repository {
         return (List<Quotable>) mAllQuotables;
     }
 
-//    public void getAssociatedWords(int userId) {
-//        dbExecutor.execute(() ->{
-//            mAllWords = mWordDAO.getAssociatedWords(userId);
-//        });
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

@@ -22,9 +22,6 @@ public interface QuotableDAO {
     @Delete
     void delete(Quotable quotable);
 
-//    @Query("SELECT * FROM excursions ORDER BY excursion_id ASC")
-//    List<Word> getAllWords();
-
     @Query("SELECT * FROM quotable_table WHERE user_id=:userId ORDER BY word ASC")
     List<Quotable> getAssociatedQuotables(int userId);
 
@@ -39,7 +36,5 @@ public interface QuotableDAO {
 
     @Query("SELECT * FROM quotable_table ORDER BY quotableId ASC")
     List<Quotable> getAllQuotables();
-//    @Query("SELECT *  FROM word_table WHERE wordId=:wordId")
-//    List<Excursion> getExcursion(int excursionID);
 
 }

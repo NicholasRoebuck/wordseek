@@ -23,18 +23,4 @@ public interface WordDAO {
     @Query("SELECT * FROM word_table WHERE LENGTH(word) > 5 ORDER BY RANDOM() LIMIT 1")
     Word randomWord();
 
-//    @Update
-//    void update(Word word);
-//
-//    @Delete
-//    void delete(Word word);
-//
-////    @Query("SELECT * FROM excursions ORDER BY excursion_id ASC")
-////    List<Word> getAllWords();
-//
-//    @Query("SELECT * FROM word_table WHERE userId=:userId ORDER BY word ASC")
-//    List<Word> getAssociatedWords(int userId);
-//
-////    @Query("SELECT *  FROM word_table WHERE wordId=:wordId")
-////    List<Excursion> getExcursion(int excursionID);
 }

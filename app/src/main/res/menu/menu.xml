@@ -6,4 +6,6 @@
         android:icon="@drawable/baseline_search_24"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always"/>
+    <item android:id="@+id/report"
+        android:title="Create Report"/>
 </menu>

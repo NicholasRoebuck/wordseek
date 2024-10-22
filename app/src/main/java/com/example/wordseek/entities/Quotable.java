@@ -69,4 +69,13 @@ public class Quotable {
     public void setUserId(Integer userId) {
         this.userId = this.userId;
     }
+
+    @Override
+    public String toString() {
+        return "Quotable  [  " +
+                " quotable  == '" + quotable + '\'' +
+                ",  userId  == " + userId +
+                ",  word  == '" + word + '\'' +
+                "  ]";
+    }
 }
