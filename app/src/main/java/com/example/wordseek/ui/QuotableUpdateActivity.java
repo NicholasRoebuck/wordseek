@@ -54,7 +54,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
     ExecutorService executorService;
     RecyclerView quotableRecyclerView;
     OnBackPressedCallback onBackPressedCallback;
-
+    String wordListPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
         List<String> fromWordList = repository.getAllDistinctWords(userId);
-        String wordListPosition = fromWordList.get(position);
+        wordListPosition = fromWordList.get(position);
         quotablesList = repository.getAssociatedQuotables(wordListPosition);
 
         getDefinition(wordListPosition);

@@ -273,4 +273,5 @@ public class ProfileActivity extends AppCompatActivity implements WordAdapterInt
     protected void onDestroy() {
         onBackPressedCallback.remove();
         super.onDestroy();
-    }}
+    }
+}

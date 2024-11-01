@@ -28,6 +28,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -94,8 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Re-entered password must be more than 8 characters", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int pass1 = hashPass(passwordString);
-                int pass2 = hashPass(rePasswordString);
+                String pass1 = hashPass(passwordString);
+                String pass2 = hashPass(rePasswordString);
 
                 if (checkPasswords(pass1, pass2)){
                         if (!checkUsernames(userNameString)){
@@ -150,16 +151,24 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public static int hashPass(String pass){
-        int hash = 0;
-        for (int i = 0; i < pass.length(); i++){
-            hash += pass.charAt(i);
+    public static String hashPass(String pass) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(pass.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
-        return hash * (pass.charAt(pass.length() -1) -  (pass.length() * pass.length()));
     }
 
-    public boolean checkPasswords(int pass1, int pass2){
-        return pass1 == pass2;
+    public boolean checkPasswords(String pass1, String pass2){
+        return pass1.equals(pass2);
     }
 
     public boolean checkUsernames(String userName) {

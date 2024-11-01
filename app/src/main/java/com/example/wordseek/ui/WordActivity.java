@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,6 +30,7 @@ import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.User;
 import com.example.wordseek.entities.Word;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +50,7 @@ public class WordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_word);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.wordActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -168,7 +170,7 @@ public class WordActivity extends AppCompatActivity {
 
 
 
-    public void getAudio(JSONArray jsonObject) {
+    public void getAudio(@NonNull JSONArray jsonObject) {
         try {
             String audioUrl = ""; //jsonObjectData.optString("audio", "");
             for (int i = 0; i< jsonObject.length(); i++){

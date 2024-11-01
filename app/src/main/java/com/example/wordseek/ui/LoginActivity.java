@@ -23,6 +23,8 @@ import com.example.wordseek.R;
 import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,8 +71,8 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                int pass = hashPass(passwordString);
-                User user = repository.userLogin(userNameString, String.valueOf(pass));
+                String pass = hashPass(passwordString);
+                User user = repository.userLogin(userNameString, pass);
 
                 if (user==null ){
                     Toast.makeText(LoginActivity.this, "Invalid username and password", Toast.LENGTH_SHORT).show();
@@ -120,12 +122,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public static int hashPass(String pass){
-        int hash = 0;
-        for (int i = 0; i < pass.length(); i++){
-            hash += pass.charAt(i);
+    public static String hashPass(String pass) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(pass.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
-        return hash * (pass.charAt(pass.length() -1) -  (pass.length() * pass.length()));
     }
 
     @Override

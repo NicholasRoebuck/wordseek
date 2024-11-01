@@ -8,16 +8,16 @@
     android:padding="15dp"
     tools:context=".ui.MainActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/wordseekWelcomeBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="WordSeek banner"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="319dp"
+        android:layout_height="523dp"
+        android:src="@drawable/banner"
+        app:layout_constraintBottom_toBottomOf="@+id/mainRegisterBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.006" />
 
     <Button
         android:id="@+id/mainLoginBtn"
