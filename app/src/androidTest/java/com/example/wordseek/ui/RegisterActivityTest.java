@@ -32,8 +32,8 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RegisterActivityTest {
-    static final String ACCOUNT_NAME = "John Smith";
-    static final String USERNAME = "JSmith99";
+    static final String ACCOUNT_NAME = "John Phather";
+    static final String USERNAME = "JohnPha9001";
     static final String PASSWORD = "password123";
     static final String RE_PASSWORD= "password123";
 

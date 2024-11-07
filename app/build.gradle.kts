@@ -59,6 +59,7 @@ dependencies {
     androidTestImplementation("org.mockito:mockito-android:3.12.4")
     implementation("androidx.tracing:tracing:1.1.0")
 
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")

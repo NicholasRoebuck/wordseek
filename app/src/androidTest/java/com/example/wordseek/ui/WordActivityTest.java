@@ -23,6 +23,7 @@ import com.example.wordseek.R;
 import com.example.wordseek.entities.User;
 import com.example.wordseek.entities.Word;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -31,37 +32,19 @@ import org.mockito.Mockito;
 
 import java.util.Objects;
 
-@RunWith(AndroidJUnit4.class)
 @LargeTest
 public class WordActivityTest {
-    static final String ACCOUNT_NAME = "John Smith";
-    static final String USERNAME = "JSmith99";
+    static final String USERNAME = "JohnPha9001";
     static final String PASSWORD = "password123";
-    static final String RE_PASSWORD= "password123";
-    static String WORD = "";
+    static String WORD = "Something";
 
     @Rule
     public ActivityScenarioRule<WordActivity> activityScenarioRule =
             new ActivityScenarioRule<>(WordActivity.class);
 
-    @BeforeClass
-    public static void setUpOnce() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         ActivityScenario.launch(MainActivity.class);
-
-        onView(withId(R.id.mainRegisterBtn)).perform(click());
-        onView(withId(R.id.register)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.accountNameEdtTxt))
-                .perform(clearText(), typeText(ACCOUNT_NAME), closeSoftKeyboard());
-        onView(withId(R.id.userNameEdtTxt))
-                .perform(clearText(), typeText(USERNAME), closeSoftKeyboard());
-        onView(withId(R.id.passwordEdtTxt))
-                .perform(clearText(), typeText(PASSWORD), closeSoftKeyboard());
-        onView(withId(R.id.rePasswordEdtTxt))
-                .perform(clearText(), typeText(RE_PASSWORD), closeSoftKeyboard());
-        onView(withId(R.id.submitBtn)).perform(click());
-
-        onView(withId(R.id.main)).check(matches(isDisplayed()));
         onView(withId(R.id.mainLoginBtn)).perform(click());
         onView(withId(R.id.login)).check(matches(isDisplayed()));
         onView(withId(R.id.userNameLoginEdtTxt))

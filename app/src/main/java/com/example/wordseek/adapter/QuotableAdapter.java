@@ -74,7 +74,7 @@ public class QuotableAdapter extends RecyclerView.Adapter<QuotableAdapter.Quotab
 
         public QuotableViewHolder(@NonNull View itemView, QuotableAdapterInterface quotableAdapterInterface) {
             super(itemView);
-            deleteQuote = itemView.findViewById(R.id.deleteQuote);
+            deleteQuote= itemView.findViewById(R.id.deleteQuote);
             deleteQuote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

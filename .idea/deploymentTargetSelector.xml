@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+      <SelectionState runConfigName="WordActivityTest">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Tests in 'com.example.wordseek.ui'">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
       <SelectionState runConfigName="QuotableUpdateActivityTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testQuotableUpdateActivityDefinitionVisible()">
+      <SelectionState runConfigName="viewWordActivityWordPronunciationFunction()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="testQuotableUpdateActivityWord()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testQuotableUpdateActivityAddQuote()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="testQuotableUpdateActivityDeleteQuote()">
+      <SelectionState runConfigName="createQuotableActivityQuotable()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

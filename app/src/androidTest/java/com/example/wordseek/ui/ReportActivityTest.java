@@ -1,6 +1,5 @@
 package com.example.wordseek.ui;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,10 +12,7 @@ import androidx.test.filters.LargeTest;
 
 import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.Quotable;
-import com.example.wordseek.entities.User;
-import com.example.wordseek.entities.Word;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,8 +31,8 @@ public class ReportActivityTest {
     public ActivityScenarioRule<ReportActivity> activityScenarioRule =
             new ActivityScenarioRule<>(new Intent(ApplicationProvider.getApplicationContext(), ReportActivity.class));
 
-    @Before
-    public void setUp() throws Exception {
+    @Test
+    public void ReportsTest() throws Exception {
         mockRepo = mock(Repository.class);
         List<Quotable> quotables = new ArrayList<>();
         quotables.add(new Quotable("Some quote"));

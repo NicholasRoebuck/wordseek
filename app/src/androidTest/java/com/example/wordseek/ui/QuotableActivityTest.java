@@ -82,16 +82,13 @@ public class QuotableActivityTest {
 
     @Test
     public void createQuotableActivityQuotable()throws Exception{
-
         onView(withId(R.id.quoteEdtTxt))
                 .perform(clearText(),
                         typeText("Some new quote to be added with the word abolish"),
                         closeSoftKeyboard());
         onView(withId(R.id.quoteSubmitBtn)).perform(click());
         onView(withId(R.id.quotableRecyclerView)).check(matches(isDisplayed()));
-        onView(withId(R.id.quotableRecyclerView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-
+        onView(withId(R.id.quotableRecyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
 }
