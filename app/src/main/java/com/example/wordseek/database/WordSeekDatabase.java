@@ -13,7 +13,7 @@ import com.example.wordseek.entities.Quotable;
 import com.example.wordseek.entities.User;
 import com.example.wordseek.entities.Word;
 
-@Database(entities = {Quotable.class, Word.class, User.class}, version = 2, exportSchema = false)
+@Database(entities = {Quotable.class, Word.class, User.class}, version = 1, exportSchema = false)
 public abstract class WordSeekDatabase extends RoomDatabase {
 
     public abstract UserDAO UserDAO();

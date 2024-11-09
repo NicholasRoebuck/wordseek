@@ -19,12 +19,16 @@ public class Quotable {
     @ColumnInfo(name = "user_id")
     Integer userId;
 
+    @ColumnInfo(name = "date")
+    String date;
+
     @Ignore
-    public Quotable(Integer quotableId, String word, String quotable, Integer userId) {
+    public Quotable(Integer quotableId, String word, String quotable, Integer userId, String date) {
         this.quotableId = quotableId;
         this.word = word;
         this.quotable = quotable;
         this.userId = userId;
+        this.date = date;
     }
 
     @Ignore
@@ -32,10 +36,11 @@ public class Quotable {
         this.quotable = quotable;
     }
 
-    public Quotable(String word, String quotable, Integer userId) {
+    public Quotable(String word, String quotable, Integer userId, String date) {
         this.word = word;
         this.quotable = quotable;
         this.userId = userId;
+        this.date = date;
     }
 
     public Integer getQuotableId() {
@@ -70,12 +75,21 @@ public class Quotable {
         this.userId = this.userId;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Quotable  [  " +
-                " quotable  == '" + quotable + '\'' +
-                ",  userId  == " + userId +
-                ",  word  == '" + word + '\'' +
+                " Quotable  == '" + quotable + '\'' +
+                ",  User ID  == " + userId +
+                ",  Word  == '" + word + '\'' +
+                ",  Date  == '" + date + '\'' +
                 "  ]";
     }
 }

@@ -35,6 +35,8 @@ import com.example.wordseek.entities.Quotable;
 import com.example.wordseek.entities.User;
 import com.example.wordseek.entities.Word;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -119,7 +121,7 @@ public class QuotableActivity extends AppCompatActivity implements QuotableAdapt
                 if (!quote.trim().isEmpty()) {
                     SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
                     int userId = sharedPreferences.getInt("userId", 0);
-                    Quotable quotable =new Quotable(word.getWord(), quote, userId);
+                    Quotable quotable =new Quotable(word.getWord(), quote, userId, String.valueOf(LocalDate.now()));
                     quotableAdapter.addQuote(quotable);
                     executorService.execute(()->{
                         repository.insert(quotable);

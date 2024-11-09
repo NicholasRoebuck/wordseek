@@ -41,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -116,7 +117,7 @@ public class QuotableUpdateActivity extends AppCompatActivity implements Quotabl
                     SharedPreferences sharedPreferences = getSharedPreferences("SharedPref_Name", MODE_PRIVATE);
                     int userId = sharedPreferences.getInt("userId", 0);
                     Log.i("UpdateQuotableAct", "onClick: " + quotablesList.size());
-                    Quotable quotable =new Quotable(word, quote, userId);
+                    Quotable quotable =new Quotable(word, quote, userId, String.valueOf(LocalDate.now()));
                     quotesEdtTxt.setText("");
                     executorService.execute(()->{
                         repository.insert(quotable);
