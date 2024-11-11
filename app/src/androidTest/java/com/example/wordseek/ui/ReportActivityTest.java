@@ -35,15 +35,15 @@ public class ReportActivityTest {
     public void ReportsTest() throws Exception {
         mockRepo = mock(Repository.class);
         List<Quotable> quotables = new ArrayList<>();
-        quotables.add(new Quotable("Some quote"));
-        quotables.add(new Quotable("Another quote"));
-        quotables.add(new Quotable("More quote"));
-        quotables.add(new Quotable("More of the more quote"));
+        quotables.add(new Quotable("Some word","Some quote", 2, "11/10/2024"));
+        quotables.add(new Quotable("Some word","Some quote", 3, "10/10/2024"));
+        quotables.add(new Quotable("Another word","Another quote", 2, "9/10/2024"));
+        quotables.add(new Quotable("Some word","Some quote", 1, "19/10/2024"));
 
         when(mockRepo.getAllQuotables()).thenReturn(quotables);
         activityScenarioRule.getScenario().onActivity(activity -> {
             activity.reportAdapter.addAll(quotables);
-            activity.reportList.setAdapter(activity.reportAdapter);
+            activity.reportRecyclerView.setAdapter(activity.reportAdapter);
         });
     }
 }

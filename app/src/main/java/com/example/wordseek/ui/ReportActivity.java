@@ -11,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wordseek.R;
+import com.example.wordseek.adapter.ReportAdapter;
 import com.example.wordseek.database.Repository;
 import com.example.wordseek.entities.Quotable;
 
@@ -22,8 +25,8 @@ import java.util.List;
 public class ReportActivity extends AppCompatActivity {
     OnBackPressedCallback onBackPressedCallback;
     List<Quotable> quotables;
-    ArrayAdapter<Quotable> reportAdapter;
-    ListView reportList;
+    RecyclerView reportRecyclerView;
+    ReportAdapter reportAdapter;
     Repository repository;
 
     @Override
@@ -31,17 +34,19 @@ public class ReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_report);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.report), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        reportList = findViewById(R.id.reportList);
+        reportRecyclerView = findViewById(R.id.reportRecyclerView);
         repository = new Repository(getApplication());
         quotables = repository.getAllQuotables();
-        reportAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, quotables);
 
-        reportList.setAdapter(reportAdapter);
+        reportAdapter = new ReportAdapter(this, quotables);
+        reportRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        reportRecyclerView.setAdapter(reportAdapter);
+        reportAdapter.notifyDataSetChanged();
         onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
